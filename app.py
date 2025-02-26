@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import cv2
 import requests
 import matplotlib.pyplot as plt
 import datetime
@@ -177,7 +178,7 @@ st.sidebar.markdown("# Manipur Precision Farming")
 page = st.sidebar.selectbox(
     "Select a service:",
     ["Home", "Disease Detection", "Outbreak Prediction System", 
-     "Weather Insights", "Crop Recommendations", "Iot Dashboard", "Soil Distribution", "Drone Hyperstral Imaging"]
+     "Weather Insights", "Crop Recommendations", "Iot Dashboard", "Soil Distribution", "Drone Hyperspectral Imagery"]
 )
 
 if page == "Home":
@@ -548,3 +549,79 @@ elif page == "Soil Distribution":
             file_name="soil_distribution_map.png",
             mime="image/png"
         )
+
+
+
+
+elif page == "Drone Hyperspectral Imagery":
+    st.markdown("<h1 class='main-header'>Drone Hyperspectral Imagery</h1>", unsafe_allow_html=True)
+    
+    st.markdown("""
+    Analyze vegetation health using drone hyperspectral imagery.
+    Upload an image to identify healthy and stressed vegetation areas.
+    """)
+    
+    # File uploader
+    uploaded_file = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
+    
+    if uploaded_file is not None:
+        # Save the uploaded file temporarily
+        with open("temp_image.png", "wb") as f:
+            f.write(uploaded_file.getbuffer())
+        
+        # Analyze vegetation health
+        with st.spinner("Analyzing vegetation health..."):
+            # Load image
+            img = cv2.imread("temp_image.png")
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)  # Convert to RGB
+
+            # Convert to HSV color space
+            hsv = cv2.cvtColor(img, cv2.COLOR_RGB2HSV)
+
+            # Define thresholds:
+            # Healthy (blue regions)
+            healthy_lower = np.array([90, 50, 50])   # Lower bound for blue
+            healthy_upper = np.array([140, 255, 255]) # Upper bound for blue
+
+            # Stressed (red/yellow regions)
+            stressed_lower1 = np.array([0, 100, 50])   # Lower bound for red/yellow
+            stressed_upper1 = np.array([20, 255, 255]) # Upper bound for red/yellow
+            stressed_lower2 = np.array([160, 100, 50]) # Second range for deep red
+            stressed_upper2 = np.array([180, 255, 255]) 
+
+            # Create masks
+            healthy_mask = cv2.inRange(hsv, healthy_lower, healthy_upper)
+            stressed_mask1 = cv2.inRange(hsv, stressed_lower1, stressed_upper1)
+            stressed_mask2 = cv2.inRange(hsv, stressed_lower2, stressed_upper2)
+            stressed_mask = cv2.bitwise_or(stressed_mask1, stressed_mask2)
+
+            # Calculate pixel counts
+            total_pixels = img.shape[0] * img.shape[1]
+            healthy_pixels = np.sum(healthy_mask > 0)
+            stressed_pixels = np.sum(stressed_mask > 0)
+
+            # Compute percentage
+            healthy_percentage = (healthy_pixels / total_pixels) * 100
+            stressed_percentage = (stressed_pixels / total_pixels) * 100
+
+            # Display results
+            st.markdown("<h3 class='sub-header'>Vegetation Health Analysis</h3>", unsafe_allow_html=True)
+            st.markdown(f"""
+            <div style=" padding: 1rem; border-radius: 0.5rem; margin-bottom: 1rem;">
+                <p><strong>Healthy Vegetation:</strong> {healthy_percentage:.2f}%</p>
+                <p><strong>Stressed Vegetation:</strong> {stressed_percentage:.2f}%</p>
+            </div>
+            """, unsafe_allow_html=True)
+
+            # Visualization
+            st.markdown("<h4 class='sub-header'>Visualization</h4>", unsafe_allow_html=True)
+            col1, col2, col3 = st.columns(3)
+            
+            with col1:
+                st.image(img, caption="Original Image", use_container_width=True)
+            
+            with col2:
+                st.image(healthy_mask, caption="Healthy Areas", use_container_width=True, clamp=True)
+            
+            with col3:
+                st.image(stressed_mask, caption="Stressed Areas", use_container_width=True, clamp=True)
