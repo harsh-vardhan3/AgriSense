@@ -72,7 +72,7 @@ disease_info = pd.read_csv('disease_info.csv', encoding='cp1252')
 supplement_info = pd.read_csv('supplement_info.csv', encoding='cp1252')
 
 # Load the trained model
-model = CNN.CNN(39)  # Ensure this matches your model architecture
+model = CNN.CNN(39)  
 model.load_state_dict(torch.load("plant_disease_model_1_latest.pt", map_location=torch.device('cpu')))  # Use CPU for inference
 model.eval()
 
@@ -101,7 +101,6 @@ def detect_disease(image):
     results = [
         {
             "name": disease_name,
-            "confidence": output[0][index],  # Confidence score
             "treatment": treatment,
             "description": description,
             "supplement_name": supplement_name,
@@ -112,8 +111,9 @@ def detect_disease(image):
 
     return results  
 
-API_KEY = "03f5034ed26d46e096c0ccd4f636b3dc"
 
+
+API_KEY = "03f5034ed26d46e096c0ccd4f636b3dc"
 def get_weather_forecast(location):
     """Fetch real-time weather forecast data using OpenWeatherMap API."""
     # Get latitude and longitude for the selected location
@@ -153,16 +153,16 @@ def get_weather_forecast(location):
 
 # Sample locations in Manipur (actual implementation would use a database)
 LOCATIONS = [
-    {"name": "Imphal East", "lat": 24.8174, "lon": 93.9368},
-    {"name": "Imphal West", "lat": 24.8179, "lon": 93.8865},
-    {"name": "Thoubal", "lat": 24.6396, "lon": 94.0148},
-    {"name": "Bishnupur", "lat": 24.6331, "lon": 93.7536},
-    {"name": "Churachandpur", "lat": 24.3299, "lon": 93.6824},
-    {"name": "Chandel", "lat": 24.3234, "lon": 94.0023},
-    {"name": "Senapati", "lat": 25.2686, "lon": 94.0514},
-    {"name": "Ukhrul", "lat": 25.0428, "lon": 94.3674},
-    {"name": "Tamenglong", "lat": 24.9958, "lon": 93.4848},
-    {"name": "Jiribam", "lat": 24.8061, "lon": 93.1214}
+    {"name": "Imphal East", "lat": 24.8060, "lon": 93.9387},  # Porompat
+    {"name": "Imphal West", "lat": 24.8065, "lon": 93.9389},   # Lamphelpat
+    {"name": "Thoubal", "lat": 24.6388, "lon": 94.0033},       # Thoubal Town
+    {"name": "Bishnupur", "lat": 24.6276, "lon": 93.7739},     # Bishnupur Town
+    {"name": "Churachandpur", "lat": 24.3333, "lon": 93.6833}, # Churachandpur Town
+    {"name": "Chandel", "lat": 24.3167, "lon": 94.0333},       # Chandel Town
+    {"name": "Senapati", "lat": 25.2675, "lon": 94.0667},      # Senapati Town
+    {"name": "Ukhrul", "lat": 25.1167, "lon": 94.3667},        # Ukhrul Town
+    {"name": "Tamenglong", "lat": 24.9750, "lon": 93.5167},    # Tamenglong Town
+    {"name": "Jiribam", "lat": 24.8000, "lon": 93.1167}        # Jiribam Town
 ]
 
 # Sample crop types common in Manipur
@@ -425,9 +425,9 @@ elif page == "Crop Recommendations":
     
     # Input fields
     with st.form("crop_prediction_form"):
-        nitrogen = st.number_input("Nitrogen (mg/kg)", min_value=0, max_value=500, value=100)
-        phospho = st.number_input("Phosphorus (mg/kg)", min_value=0, max_value=500, value=50)
-        potass = st.number_input("Potassium (mg/kg)", min_value=0, max_value=500, value=200)
+        nitrogen = st.number_input("Nitrogen (kg/hectare)", min_value=20, max_value=120, value=50)
+        phospho = st.number_input("Phosphorus (kg/hectare)", min_value=20, max_value=120, value=50)
+        potass = st.number_input("Potassium (kg/hectare)", min_value=20, max_value=120, value=50)
         soil_ph = st.number_input("Soil pH", min_value=0.0, max_value=14.0, value=6.5)
         soil_moisture = st.number_input("Soil Moisture (%)", min_value=0, max_value=100, value=50)
         
