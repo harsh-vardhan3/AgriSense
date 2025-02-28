@@ -182,7 +182,7 @@ page = st.sidebar.selectbox(
 )
 
 if page == "Home":
-    st.markdown("<h1 class='main-header'>Manipur Precision Farming Assistant</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 class='main-header'>AgriSense- Manipur Precision Farming Assistant</h1>", unsafe_allow_html=True)
     
     col1, col2 = st.columns([2, 1])
     
@@ -205,7 +205,6 @@ if page == "Home":
         Select a service from the sidebar to begin.
         """)
         
-        st.markdown("<div class='info-box'>", unsafe_allow_html=True)
         st.markdown("""
         **Latest Agricultural Alerts for Manipur:**
         - ⚠️ Increased risk of Rice Blast in Imphal East district due to recent rainfall patterns
@@ -217,13 +216,18 @@ if page == "Home":
     with col2:
         st.image(r"images_frontend\a.png", use_container_width=True)
         
-        st.markdown("<div class='section'>", unsafe_allow_html=True)
+        # Real-time Weather Data
         st.markdown("### Current Conditions")
         current_date = datetime.datetime.now().strftime("%B %d, %Y")
         st.write(f"**Date:** {current_date}")
-        st.write("**Overall Disease Risk:** Moderate")
-        st.write("**Weather:** Partly Cloudy, 28°C")
-        st.markdown("</div>", unsafe_allow_html=True)
+        
+        try:
+            weather_data = get_weather_data()  # API call to OpenWeatherMap/IMD
+            st.write(f"**Temperature:** {weather_data['temp']}°C")
+            st.write(f"**Humidity:** {weather_data['humidity']}%")
+            st.write(f"**Conditions:** {weather_data['description']}")
+        except:
+            st.write("**Weather:** Data unavailable")
     
     # Map of Manipur showing agricultural insights
     st.markdown("<h2 class='sub-header'>Regional Agricultural Insights</h2>", unsafe_allow_html=True)
@@ -457,14 +461,6 @@ elif page == "Crop Recommendations":
             <h4>Best Crop to Grow: {st.session_state.predicted_crop}</h4>
         </div>
         """, unsafe_allow_html=True)
-        
-        # Display additional recommendations (optional)
-        st.markdown("<h4>Recommendations:</h4>", unsafe_allow_html=True)
-        st.markdown("""
-        - Ensure proper irrigation and drainage.
-        - Use fertilizers based on soil nutrient levels.
-        - Monitor crop health regularly.
-        """)
 
 # Weather Insights Page
 elif page == "Weather Insights":
