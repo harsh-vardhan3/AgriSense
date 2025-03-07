@@ -156,7 +156,6 @@ numpy==1.26.4
 oauthlib==3.2.2
 openai==1.65.2
 opencv-python==4.10.0.84
-opencv-python-headless
 opt-einsum==3.3.0
 overrides==7.4.0
 packaging==24.1
