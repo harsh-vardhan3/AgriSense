@@ -23,7 +23,6 @@ from sklearn.ensemble import RandomForestClassifier
 import warnings
 from outbreak_prediction.ScorePredictor import DiseaseOutbreakPredictor
 from crop_recc.logistic import predict_closest_crop
-from Firebase import call_firebase
 warnings.filterwarnings('ignore')
 
 # Set page configuration
