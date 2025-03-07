@@ -1,0 +1,15 @@
+[theme]
+# Primary color for buttons, links, and accents
+primaryColor = "#4CAF51"  # Green
+
+# Background color for the main content area
+backgroundColor = "#F5F5F5"  # Light gray
+
+# Background color for the sidebar
+secondaryBackgroundColor = "#E8F5E9"  # Light green
+
+# Text color
+textColor = "#2E7D32"  # Dark green
+
+# Font family
+font = "sans serif"
