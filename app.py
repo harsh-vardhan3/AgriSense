@@ -25,6 +25,8 @@ from outbreak_prediction.ScorePredictor import DiseaseOutbreakPredictor
 from crop_recc.logistic import predict_closest_crop
 warnings.filterwarnings('ignore')
 
+API_KEY= "sb-bef7c0288aabf67ffbceb0a3a99528d8"
+
 # Set page configuration
 st.set_page_config(
     page_title="Precision Farming for smallscale farmers",
@@ -640,15 +642,12 @@ if st.session_state.get("show_chatbot", False):
         if st.form_submit_button("Submit"):
             # Call the flow.py logic
             from mira_sdk import MiraClient, Flow
-            from dotenv import load_dotenv
             import os
-
-            # Load environment variables
-            load_dotenv()
-            api_key = os.getenv("API_KEY")
+        
+            api_key = API_KEY
 
             # Initialize the client
-            client = MiraClient(config={"API_KEY": api_key})
+            client = MiraClient(config={"API_KEY": "sb-bef7c0288aabf67ffbceb0a3a99528d8" })
             flow = Flow(source="chatbot.yaml")
 
             # Prepare input dictionary
@@ -692,15 +691,11 @@ elif page == "Resource Optimization":
 
         # Call the MiraClient and Flow logic
         from mira_sdk import MiraClient, Flow
-        from dotenv import load_dotenv
         import os
 
-        # Load environment variables
-        load_dotenv()
-        api_key = os.getenv("API_KEY")
 
         # Initialize the client
-        client = MiraClient(config={"API_KEY": api_key})
+        client = MiraClient(config={"API_KEY": "sb-bef7c0288aabf67ffbceb0a3a99528d8"})
         flow = Flow(source="resourceflow.yaml")
 
         # Prepare input dictionary
