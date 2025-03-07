@@ -205,7 +205,7 @@ st.sidebar.markdown("# AgriSense")
 page = st.sidebar.selectbox(
     "Select a service:",
     ["Home", "Disease Detection", "Outbreak Prediction System", "Resource Optimization",
-     "Weather Insights", "Crop Recommendations", "Iot Dashboard", "Soil Distribution", "Drone Hyperspectral Imagery" ]
+     "Weather Insights", "Crop Recommendations", "Soil Distribution", "Drone Hyperspectral Imagery" ]
 )
 
 if page == "Home":
@@ -411,50 +411,6 @@ elif page == "Outbreak Prediction System":
             else:
                 st.error("High Risk: Take preventive measures immediately.")
 
-
-elif page == "Iot Dashboard":
-
-    st.markdown("<h1 class='main-header'>IOT Sensor Data Crop Prediction</h1>", unsafe_allow_html=True)
-    
-    # Call Firebase to retrieve the latest sensor data
-    # Make sure that your call_firebase() function returns the nested dictionary
-    # containing the sensor data (e.g., {'nitrogen': ..., 'phosphorus': ..., etc.})
-    data = call_firebase()  
-    
-    if data is not None:
-        # Extract sensor values from the returned data dictionary
-        nitrogen, phosphorus, potassium, soilMoisture, soilPH = data 
-
-        # Call your prediction function using the sensor data
-        predicted_crop = predict_closest_crop(nitrogen, phosphorus, potassium, soilPH, soilMoisture)
-        
-        # Display the predicted crop on the page
-        st.markdown("<h3 class='sub-header'>Predicted Crop Based on IOT Data</h3>", unsafe_allow_html=True)
-        st.markdown(f"""
-        <div style='padding: 15px; border-radius: 5px; margin-bottom: 1rem;'>
-            <h4>Best Crop to Grow: {predicted_crop}</h4>
-        </div>
-        """, unsafe_allow_html=True)
-        
-        # Optionally, display the sensor data for reference
-        st.markdown("<h4>Sensor Data:</h4>", unsafe_allow_html=True)
-        st.markdown(f"""
-        - Nitrogen: {nitrogen} kg/hectare  
-        - Phosphorus: {phosphorus} kg/hectare  
-        - Potassium: {potassium} kg/hectare  
-        - Soil pH: {soilPH}  
-        - Soil Moisture: {soilMoisture}%  
-        """, unsafe_allow_html=True)
-        
-        # Additional recommendations can be displayed here
-        st.markdown("<h4>Recommendations:</h4>", unsafe_allow_html=True)
-        st.markdown("""
-        - Ensure proper irrigation and drainage.
-        - Use fertilizers based on soil nutrient levels.
-        - Monitor crop health regularly.
-        """, unsafe_allow_html=True)
-    else:
-        st.error("No sensor data available from Firebase.")
 
 
 elif page == "Crop Recommendations":
