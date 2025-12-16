@@ -2,6 +2,8 @@
 
 AgriSense is a Streamlit-based application that helps smallholder farmers with plant disease detection, outbreak risk prediction, weather insights, soil distribution visualization, and crop recommendations.
 
+**[🚀 Live Demo](https://agrisensee.streamlit.app/)**
+
 ## Features
 - Plant Disease Detection using a trained CNN model
 - Outbreak Prediction System based on weather, susceptibility, city and month weightage
