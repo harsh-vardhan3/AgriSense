@@ -97,6 +97,3 @@ Update values there if needed.
 - The app uses CPU for inference; no GPU required.
 - Ensure API keys are valid for weather data.
 
-## License
-This project is for research and demonstration. If you plan to distribute, please add an appropriate license file.
-
